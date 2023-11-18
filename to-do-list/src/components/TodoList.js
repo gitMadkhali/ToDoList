@@ -22,8 +22,7 @@ import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 // TextFiled
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { TodosContext } from "../context/todosContext";
 // Other
 import { v4 as uuidv4 } from "uuid";
@@ -39,47 +38,67 @@ const divStyle = {
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
-  // function handleCheckClick(todoID) {
-  //   // alert("Handle check click   " + todoID);
-   
-  // }
-  const todosJSX = todos.map((t) => {
-    return (
-      <Todo
-        key={t.id}
-        todo={t}
-        // handleCheck={handleCheckClick}  //I change or not do't deffernt betwwen that.
-      />
-    );
+  const [displayTodosType, setDisplayTodosType] = useState("all");
+
+  const completedTods = todos.filter((t) => t.isCompleted);
+  const nonCompletedTods = todos.filter((t) => !t.isCompleted);
+  let todosToBeRendered = todos;
+
+  if (displayTodosType === "completed") {
+    todosToBeRendered = completedTods;
+  } else if (displayTodosType === "non-completed") {
+    todosToBeRendered = nonCompletedTods;
+  }
+
+  const todosJSX = todosToBeRendered.map((t) => {
+    return <Todo key={t.id} todo={t} />;
   });
+
+  useEffect(() => {
+    // console.log("useEffecttodos", todos);
+    const storageTodos = JSON.parse(localStorage.getItem("todos")) ?? [];
+    setTodos(storageTodos);
+  }, []);
+  function changeDisabledTodosType(e) {
+    console.log(e.target.value);
+    setDisplayTodosType(e.target.value);
+  }
   function handleAddClick() {
     // alert("Add todos");
     const newTodo = {
       id: uuidv4(),
       title: titleInput,
-      details:"",
+      details: "",
       isCompleted: false,
-    }
-    setTodos([...todos, newTodo]);
-    setTitleInput("")
+    };
+    const updatedTodos = [...todos, newTodo];
+    setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTitleInput("");
   }
   return (
     <>
       <Container maxWidth="md">
-        <Card sx={{ minWidth: 275 }}>
+        <Card
+          sx={{ minWidth: 275 }}
+          style={{
+            maxHeight: "80vh",
+            overflow: "scroll",
+          }}
+        >
           <CardContent>
             <Typography variant="h2">مهامي</Typography>
             <Divider variant="middle" />
             {/* ToggleButtonGroup*/}
             <ToggleButtonGroup
-              // value={alignment}
+              value={displayTodosType}
               exclusive
-              // onChange={handleAlignment}
+              onChange={changeDisabledTodosType}
               aria-label="text alignment"
               style={{ direction: "ltr", marginTop: "30px" }}
             >
-              <ToggleButton value="not">الغير مكتمل</ToggleButton>
-              <ToggleButton value="done">المكتمل</ToggleButton>
+              <ToggleButton value="non-completed">الغير مكتمل</ToggleButton>
+              <ToggleButton value="completed">المكتمل</ToggleButton>
               <ToggleButton value="all">الكل</ToggleButton>
             </ToggleButtonGroup>
 
@@ -108,6 +127,7 @@ export default function TodoList() {
                   variant="contained"
                   color="success"
                   onClick={handleAddClick}
+                  disabled={titleInput.length <= 1}
                 >
                   إضافه
                 </Button>

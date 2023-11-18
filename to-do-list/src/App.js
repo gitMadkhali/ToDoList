@@ -1,4 +1,6 @@
 // import logo from "./logo.svg";
+import React from "react";
+
 import "./App.css";
 import TodoList from "./components/TodoList";
 // import { red } from "@mui/material/colors";
@@ -34,7 +36,6 @@ const initialTodos = [
 ];
 function App() {
     const [todos, setTodos] = useState(initialTodos);
-
   return (
     <ThemeProvider theme={theme}>
       <div

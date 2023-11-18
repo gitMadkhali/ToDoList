@@ -12,7 +12,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TodosContext } from "../context/todosContext";
 
 // Delete & Update Dialog
@@ -23,7 +23,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TransitionProps } from "@mui/material/transitions";
 import TextField from "@mui/material/TextField";
-
 export default function Todo({ todo }) {
   const [showDeleteDialog, setShowDeleDialog] = useState(false);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
@@ -34,15 +33,7 @@ export default function Todo({ todo }) {
   const { todos, setTodos } = useContext(TodosContext);
 
   // Event Handlers
-  function handleCheckClick(todo) {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id) {
-        return { ...t, isCompleted: !t.isCompleted };
-      }
-      return t;
-    });
-    setTodos(updatedTodos);
-  }
+
   function handleDeleteClick() {
     setShowDeleDialog(true);
   }
@@ -56,11 +47,21 @@ export default function Todo({ todo }) {
     setShowUpdateDialog(false);
   }
   function handleDeleteConfirm() {
-    const updatedTodos= todos.filter((t) => {
+    const updatedTodos = todos.filter((t) => {
       return t.id !== todo.id;
     });
-          setTodos(updatedTodos);
-
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodos(updatedTodos);
+  }
+  function handleCheckClick(todo) {
+    const updatedTodos = todos.map((t) => {
+      if (t.id === todo.id) {
+        return { ...t, isCompleted: !t.isCompleted };
+      }
+      return t;
+    });
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodos(updatedTodos);
   }
   function handlUpdateConfirm() {
     const updatedTodos = todos.map((t) => {
@@ -70,12 +71,13 @@ export default function Todo({ todo }) {
           title: updatedTodo.title,
           details: updatedTodo.details,
         };
-      }else{
-        return t
+      } else {
+        return t;
       }
     });
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setTodos(updatedTodos);
-    setShowUpdateDialog(false)
+    setShowUpdateDialog(false);
   }
   // ===Event Handlers===
 
@@ -158,7 +160,13 @@ export default function Todo({ todo }) {
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={8}>
-              <Typography variant="h4" style={{ textAlign: "right" }}>
+              <Typography
+                variant="h4"
+                style={{
+                  textAlign: "right",
+                  textDecoration: todo.isCompleted ? "line-through" : "none",
+                }}
+              >
                 {todo.title}
               </Typography>
               <Typography variant="h6" style={{ textAlign: "right" }}>
