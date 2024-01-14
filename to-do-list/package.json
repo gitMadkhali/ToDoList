@@ -19,7 +19,7 @@
     "prestart": "echo 'Starting the app'",
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "poststart": "echo 'App started'",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
