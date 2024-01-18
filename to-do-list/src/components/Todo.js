@@ -1,6 +1,6 @@
 // Card
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
+//import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -21,7 +21,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TransitionProps } from "@mui/material/transitions";
+//import { TransitionProps } from "@mui/material/transitions";
 import TextField from "@mui/material/TextField";
 export default function Todo({ todo }) {
   const [showDeleteDialog, setShowDeleDialog] = useState(false);
@@ -65,7 +65,7 @@ export default function Todo({ todo }) {
   }
   function handlUpdateConfirm() {
     const updatedTodos = todos.map((t) => {
-      if (t.id == todo.id) {
+      if (t.id === todo.id) {
         return {
           ...t,
           title: updatedTodo.title,

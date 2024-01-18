@@ -27,14 +27,14 @@ import { TodosContext } from "../context/todosContext";
 // Other
 import { v4 as uuidv4 } from "uuid";
 
-const divStyle = {
-  overflowY: "scroll",
-  border: "1px solid red",
-  width: "500px",
-  float: "left",
-  height: "500px",
-  position: "relative",
-};
+// const divStyle = {
+//   overflowY: "scroll",
+//   border: "1px solid red",
+//   width: "500px",
+//   float: "left",
+//   height: "500px",
+//   position: "relative",
+// };
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
