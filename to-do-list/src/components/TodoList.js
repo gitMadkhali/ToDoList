@@ -55,9 +55,7 @@ export default function TodoList() {
   });
 
   useEffect(() => {
-    // console.log("useEffecttodos", todos);
-    const storageTodos = JSON.parse(localStorage.getItem("todos")) ?? [];
-    setTodos(storageTodos);
+    console.log("useEffect  >> ");
   }, []);
   function changeDisabledTodosType(e) {
     console.log(e.target.value);
